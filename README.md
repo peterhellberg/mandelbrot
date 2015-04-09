@@ -32,6 +32,10 @@ Usage of mandelbrot:
 
 ![Pink mandelbrot set](http://assets.c7.se/skitch/mandelbrot-20150409-223252.png)
 
+### mandelbrot -show -w 320 -h 256 -n 10 -i C42583
+
+![Purple mandelbrot set](http://assets.c7.se/skitch/mandelbrot_-show_-w_320_-h_256_-n_10_-i_C42583-20150409-234938.png)
+
 ## License (MIT)
 
 *Copyright (C) 2015 [Peter Hellberg](http://c7.se/)*
