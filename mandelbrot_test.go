@@ -62,7 +62,7 @@ func TestImage(t *testing.T) {
 			t.Errorf(`unexpected size %v, want %v`, i.Bounds().Max, pt)
 		}
 
-		if got := i.At(tt.w/2, tt.h/0); got != tt.c {
+		if got := i.At(tt.w/2, tt.h/2); got != tt.c {
 			t.Errorf(`unexpected color %v, want %v`, got, tt.c)
 		}
 	}
