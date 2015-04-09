@@ -1,6 +1,9 @@
 package mandelbrot
 
-import "testing"
+import (
+	"image"
+	"testing"
+)
 
 func TestNew(t *testing.T) {
 	for _, tt := range []struct {
@@ -34,6 +37,23 @@ func TestNew(t *testing.T) {
 
 		if m.ImFactor != tt.imf {
 			t.Errorf(`m.ImFactor = %v, want %v`, m.ImFactor, tt.imf)
+		}
+	}
+}
+
+func TestImage(t *testing.T) {
+	for _, tt := range []struct {
+		w, h, i int
+	}{
+		{320, 256, 15},
+		{800, 600, 32},
+	} {
+		i := New(tt.w, tt.h, tt.i).Image()
+
+		pt := image.Point{tt.w, tt.h}
+
+		if i.Bounds().Max != pt {
+			t.Errorf(`unexpected size %v, want %v`, i.Bounds().Max, pt)
 		}
 	}
 }
