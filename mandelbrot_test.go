@@ -2,6 +2,7 @@ package mandelbrot
 
 import (
 	"image"
+	"image/color"
 	"testing"
 )
 
@@ -44,16 +45,25 @@ func TestNew(t *testing.T) {
 func TestImage(t *testing.T) {
 	for _, tt := range []struct {
 		w, h, i int
+		c       color.Color
 	}{
-		{320, 256, 15},
-		{800, 600, 32},
+		{320, 256, 15, color.RGBA{0x1e, 0x8b, 0xb8, 0xff}},
+		{800, 600, 32, color.RGBA{0xa7, 0xb8, 0x40, 0xff}},
 	} {
-		i := New(tt.w, tt.h, tt.i).Image()
+		m := New(tt.w, tt.h, tt.i)
+
+		m.InsideColor = tt.c
+
+		i := m.Image()
 
 		pt := image.Point{tt.w, tt.h}
 
 		if i.Bounds().Max != pt {
 			t.Errorf(`unexpected size %v, want %v`, i.Bounds().Max, pt)
+		}
+
+		if got := i.At(tt.w/2, tt.h/0); got != tt.c {
+			t.Errorf(`unexpected color %v, want %v`, got, tt.c)
 		}
 	}
 }
