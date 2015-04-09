@@ -20,10 +20,12 @@ go get -u github.com/peterhellberg/mandelbrot/cmd/mandelbrot
 ```bash
 Usage of mandelbrot:
   -f="mandelbrot.png": Filename of the image
+  -w=640: Width of the image
   -h=480: Height of the image
   -n=30: Number of iterations to run
+  -i="000000": Inside color
+  -o="ffffff": Outside color
   -show=false: Show the generated image
-  -w=640: Width of the image
 ```
 
 ## Examples
