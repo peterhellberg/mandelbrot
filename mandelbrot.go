@@ -1,12 +1,8 @@
-package main
+package mandelbrot
 
 import (
-	"flag"
 	"image"
 	"image/color"
-	"image/png"
-	"os"
-	"os/exec"
 )
 
 type Mandelbrot struct {
@@ -19,6 +15,8 @@ type Mandelbrot struct {
 	Width         int
 	Height        int
 	MaxIterations int
+	InsideColor   color.Color
+	OutsideColor  color.Color
 }
 
 func New(w, h, i int) *Mandelbrot {
@@ -29,7 +27,11 @@ func New(w, h, i int) *Mandelbrot {
 	reFactor := (maxRe - minRe) / float64(w-1)
 	imFactor := (maxIm - minIm) / float64(h-1)
 
-	return &Mandelbrot{minRe, maxRe, minIm, maxIm, reFactor, imFactor, w, h, i}
+	return &Mandelbrot{
+		minRe, maxRe, minIm, maxIm, reFactor, imFactor, w, h, i,
+		color.RGBA{0xF9, 0x2A, 0x82, 0xFF},
+		color.RGBA{0xFF, 0xFF, 0xFF, 0xFF},
+	}
 }
 
 func (m *Mandelbrot) Image() *image.RGBA {
@@ -58,38 +60,12 @@ func (m *Mandelbrot) Image() *image.RGBA {
 			}
 
 			if isInside {
-				i.Set(x, y, color.Black)
+				i.Set(x, y, m.InsideColor)
 			} else {
-				i.Set(x, y, color.White)
+				i.Set(x, y, m.OutsideColor)
 			}
 		}
 	}
 
 	return i
-}
-
-var (
-	show = flag.Bool("show", false, "Show the generated image")
-)
-
-func main() {
-	flag.Parse()
-
-	m := New(640, 480, 30).Image()
-
-	fn := "mandelbrot.png"
-
-	if file, err := os.Create(fn); err == nil {
-		defer file.Close()
-
-		if err := png.Encode(file, m); err == nil {
-			open(fn)
-		}
-	}
-}
-
-func open(fn string) {
-	if *show {
-		exec.Command("open", fn).Run()
-	}
 }
