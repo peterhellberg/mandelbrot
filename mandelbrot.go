@@ -5,6 +5,7 @@ import (
 	"image/color"
 )
 
+// Mandelbrot set
 type Mandelbrot struct {
 	MinRe         float64
 	MaxRe         float64
@@ -19,7 +20,8 @@ type Mandelbrot struct {
 	OutsideColor  color.Color
 }
 
-func New(w, h, i int) *Mandelbrot {
+// New creates a new Mandelbrot set
+func New(w, h, i int, options ...func(*Mandelbrot)) *Mandelbrot {
 	minRe := -2.0
 	maxRe := 1.0
 	minIm := -1.2
@@ -27,13 +29,28 @@ func New(w, h, i int) *Mandelbrot {
 	reFactor := (maxRe - minRe) / float64(w-1)
 	imFactor := (maxIm - minIm) / float64(h-1)
 
-	return &Mandelbrot{
+	m := &Mandelbrot{
 		minRe, maxRe, minIm, maxIm, reFactor, imFactor, w, h, i,
-		color.RGBA{0xF9, 0x2A, 0x82, 0xFF},
-		color.RGBA{0xFF, 0xFF, 0xFF, 0xFF},
+		color.Black,
+		color.White,
+	}
+
+	for _, option := range options {
+		option(m)
+	}
+
+	return m
+}
+
+// Colors changes the inside and outside colors of the set
+func Colors(inside, outside color.Color) func(*Mandelbrot) {
+	return func(m *Mandelbrot) {
+		m.InsideColor = inside
+		m.OutsideColor = outside
 	}
 }
 
+// Image renders an image of the set
 func (m *Mandelbrot) Image() *image.RGBA {
 	i := image.NewRGBA(image.Rect(0, 0, m.Width, m.Height))
 
