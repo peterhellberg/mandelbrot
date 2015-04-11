@@ -1,5 +1,5 @@
 run:
-	go run main.go
+	godep go run main.go
 
 js:
 	gopherjs build -m -o main.js main.go
