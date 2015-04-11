@@ -5,4 +5,7 @@ sudo: false
 go: 1.4.2
 
 install:
-  - go get github.com/hajimehoshi/ebiten
+  - true
+
+script:
+  - go test
