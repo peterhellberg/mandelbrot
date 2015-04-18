@@ -5,4 +5,5 @@ sudo: false
 go: 1.4.2
 
 install:
+  - sudo apt-get install libopenal1 libopenal-dev
   - go get github.com/hajimehoshi/ebiten
