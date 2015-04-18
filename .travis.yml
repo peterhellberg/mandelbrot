@@ -3,5 +3,5 @@ language: go
 go: 1.4.2
 
 install:
-  - sudo apt-get install libopenal1 libopenal-dev
+  - sudo apt-get install libopenal1 libopenal-dev libglfw3 libglfw3-dev
   - go get github.com/hajimehoshi/ebiten
