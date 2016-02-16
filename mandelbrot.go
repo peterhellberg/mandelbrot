@@ -20,8 +20,11 @@ type Mandelbrot struct {
 	OutsideColor  color.Color
 }
 
+// Function that changes a Mandelbrot struct
+type ChangeFunc func(*Mandelbrot)
+
 // New creates a new Mandelbrot set
-func New(w, h, i int, options ...func(*Mandelbrot)) *Mandelbrot {
+func New(w, h, i int, options ...ChangeFunc) *Mandelbrot {
 	minRe := -2.0
 	maxRe := 1.0
 	minIm := -1.2
@@ -36,14 +39,15 @@ func New(w, h, i int, options ...func(*Mandelbrot)) *Mandelbrot {
 	}
 
 	for _, option := range options {
+		// Apply changes to the struct
 		option(m)
 	}
 
 	return m
 }
 
-// Colors changes the inside and outside colors of the set
-func Colors(inside, outside color.Color) func(*Mandelbrot) {
+// Colors returns a function that changes the inside and outside colors of the set
+func Colors(inside, outside color.Color) ChangeFunc {
 	return func(m *Mandelbrot) {
 		m.InsideColor = inside
 		m.OutsideColor = outside

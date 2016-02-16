@@ -67,3 +67,26 @@ func TestImage(t *testing.T) {
 		}
 	}
 }
+
+func TestOption(t *testing.T) {
+	w := 32
+	h := 32
+	i := 15
+
+	cf1 := Colors(color.RGBA{0, 0, 0, 0xff}, color.RGBA{0xff, 0xff, 0xff, 0xff})
+	blue := color.RGBA{0, 0, 0xff, 0xff}
+	cf2 := Colors(blue, color.RGBA{0xff, 0, 0, 0xff})
+	m := New(w, h, i, cf1, cf2)
+
+	img := m.Image()
+
+	pt := image.Point{w, h}
+
+	if img.Bounds().Max != pt {
+		t.Errorf(`unexpected size %v, want %v`, img.Bounds().Max, pt)
+	}
+
+	if got := img.At(w/2, h/2); got != blue {
+		t.Errorf(`unexpected color %v, want %v`, got, blue)
+	}
+}
